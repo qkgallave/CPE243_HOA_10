@@ -1,0 +1,9 @@
+[GNS3]
+R1
+
+[GNS3:vars]
+ansible_user=cisco
+ansible_password=cisco
+ansible_network_os=ios
+ansible_become=yes
+ansible_become_method=enable

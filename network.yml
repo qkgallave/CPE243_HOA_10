@@ -1,0 +1,47 @@
+---
+- hosts: GNS3
+  connection: network_cli
+  tasks:
+
+  - name: Configuration for hostname
+    ios_config:
+      lines:
+        - hostname R1
+    become: yes
+    become_method: enable
+  - name: Creating an MOTD banner
+    ios_banner:
+      banner: motd
+      text: "Unauthorized Access is Strictly Prohibited!"
+    become: yes
+    become_method: enable
+  - name: Enable password encryption
+    ios_config:
+      lines:
+        - service password-encryption
+    become: yes
+    become_method: enable
+  - name: Configure passwords
+    ios_config:
+      lines:
+        - password cisco
+        - login
+      parents:
+        - line vty 0 15
+        - line console 0
+    become: yes
+    become_method: enable
+  - name: Enable FastEthernet0/0
+    ios_interfaces:
+      config:
+        - name: FastEthernet0/0
+          description: Configured by playbook
+          enabled: True
+    become: yes
+    become_method: enable
+
+  - name: Save configuration
+    ios_config:
+      backup: true
+    become: yes
+    become_method: enable
